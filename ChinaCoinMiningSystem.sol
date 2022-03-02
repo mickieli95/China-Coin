@@ -2,7 +2,10 @@ pragma solidity ^0.6.2;
 /* SPDX-License-Identifier: UNLICENSED */
 
 interface IERC20
-{ function transfer(address _to, uint _value) external returns (bool success); function balanceOf(address _owner) external returns (uint256 balance); }
+{
+    function transfer(address _to, uint _value) external returns (bool success);
+    function balanceOf(address _owner) external returns (uint256 balance);
+}
 
 contract ChinaCoinMiningSystem
 {
@@ -37,7 +40,7 @@ contract ChinaCoinMiningSystem
     constructor() public 
     {
         owner_address = msg.sender;
-        start_timestamp = 1646251200; /* Wednesday, 2 March 2022 20:00:00 */
+        start_timestamp = now; /* Wednesday, 2 March 2022 20:00:00 */
         TCCI = IERC20(tcc_contract);
     }
 
@@ -56,7 +59,7 @@ contract ChinaCoinMiningSystem
         require(now > start_timestamp, "mining not open yet.");
         require(msg.value >= 1 ether, "minimum 1 TLOS.");
         require(msg.value <= 2 ether, "maximum 2 TLOS.");
-        require(last_update_time[msg.sender] >= now+60, "mining too fast, throttled.");
+        require(last_update_time[msg.sender] <= now+60, "mining too fast, throttled.");
 
         /* Get global update time */
         if (last_global_update == 0)
