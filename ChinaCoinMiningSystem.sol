@@ -2,10 +2,7 @@ pragma solidity ^0.6.2;
 /* SPDX-License-Identifier: UNLICENSED */
 
 interface IERC20
-{
-    function transfer(address _to, uint _value) external returns (bool success);
-    function balanceOf(address _owner) external returns (uint256 balance);
-}
+{ function transfer(address _to, uint _value) external returns (bool success); function balanceOf(address _owner) external returns (uint256 balance); }
 
 contract ChinaCoinMiningSystem
 {
