@@ -24,15 +24,15 @@ contract ChinaCoinMiningSystem
     address public owner_address;
 
     mapping(address => uint256) public last_update_time;
-    uint256 public start_timestamp;
-    uint256 last_global_update = 0;
+    uint256 public public start_timestamp;
+    uint256 public last_global_update = 0;
 
-    uint16 total_miners_in_period = 0;
+    uint16 public total_miners_in_period = 0;
 
-    uint16 period_duration = 60; /* How long a mining period lasts, in seconds. */
-    uint16 max_miners_in_period = 10; /* How many miners are allowed in one period. */
+    uint16 public period_duration = 60; /* How long a mining period lasts, in seconds. */
+    uint16 public max_miners_in_period = 10; /* How many miners are allowed in one period. */
 
-    bool locked = false;
+    bool public locked = false;
 
     constructor() public 
     {
