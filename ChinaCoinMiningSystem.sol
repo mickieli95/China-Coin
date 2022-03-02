@@ -24,13 +24,16 @@ contract ChinaCoinMiningSystem
     address public owner_address;
 
     mapping(address => uint256) public last_update_time;
-    uint256 public public start_timestamp;
+    uint256 public start_timestamp;
     uint256 public last_global_update = 0;
 
     uint16 public total_miners_in_period = 0;
 
     uint16 public period_duration = 60; /* How long a mining period lasts, in seconds. */
     uint16 public max_miners_in_period = 10; /* How many miners are allowed in one period. */
+
+    uint256 public min_tlos_to_mine = 1;
+    uint256 public max_tlos_to_mine = 2;
 
     bool public locked = false;
 
@@ -54,8 +57,8 @@ contract ChinaCoinMiningSystem
         require(current_balance >= 5000000000000000000000000);
         require(total_miners_in_period < max_miners_in_period, "too many miners, throttled.");
         require(now > start_timestamp, "mining not open yet.");
-        require(msg.value >= 1 ether, "minimum 1 TLOS.");
-        require(msg.value <= 2 ether, "maximum 2 TLOS.");
+        require(msg.value >= min_tlos_to_mine * 1 ether /100, "minimum TLOS not reached.");
+        require(msg.value <= max_tlos_to_mine * 1 ether /100, "exceeded maximum TLOS.");
         require(last_update_time[msg.sender] <= now+60, "mining too fast, throttled.");
 
         /* Get global update time */
@@ -69,17 +72,17 @@ contract ChinaCoinMiningSystem
 
         total_miners_in_period++;
 
-        uint256 reward = 300000000000000000000000; /* level 0 reward */
+        uint256 reward = level_0_reward; /* level 0 reward */
         /* Determine mining level */
         if (current_balance >= level_1_mining)
         {   if (current_balance < level_2_mining)
-            {   reward = 350000000000000000000000;   } /* level 1 reward */
+            {   reward = level_1_reward;   } /* level 1 reward */
             else
             {   if (current_balance < level_3_mining)
-                {   reward = 500000000000000000000000;   } /* level 2 reward */
+                {   reward = level_2_reward;   } /* level 2 reward */
                 else
                 {   if (current_balance >= level_3_mining)
-                    {   reward = 700000000000000000000000;   } /* level 3 reward */
+                    {   reward = level_3_reward;   } /* level 3 reward */
                 }
             }
         }
@@ -101,7 +104,12 @@ contract ChinaCoinMiningSystem
     function SET_LVL1_REWARD(uint256 reward) public onlyOwner {level_1_reward = reward;}
     function SET_LVL2_REWARD(uint256 reward) public onlyOwner {level_2_reward = reward;}
     function SET_LVL3_REWARD(uint256 reward) public onlyOwner {level_3_reward = reward;}
+    function SET_LVL0_MINING(uint256 mining) public onlyOwner {level_0_mining = mining;}
+    function SET_LVL1_MINING(uint256 mining) public onlyOwner {level_1_mining = mining;}
+    function SET_LVL2_MINING(uint256 mining) public onlyOwner {level_2_mining = mining;}
+    function SET_LVL3_MINING(uint256 mining) public onlyOwner {level_3_mining = mining;}
     function SET_PERIOD_DURATION(uint16 duration) public onlyOwner {period_duration = duration;}
     function SET_MAX_MINERS(uint16 max_miners) public onlyOwner {max_miners_in_period = max_miners;}
     function SET_LOCKED(bool _locked) public onlyOwner {locked = _locked;}
+    function SET_MIN_MAX(uint256 min, uint256 max) public onlyOwner {min_tlos_to_mine = min; max_tlos_to_mine = max;}
 }
