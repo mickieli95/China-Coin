@@ -55,7 +55,7 @@ contract ChinaCoinMiningSystem
         /* Check user's China Coin balance. */
         uint256 current_balance = TCCI.balanceOf(msg.sender);
         require(current_balance >= 5000000000000000000000000);
-
+        require(total_miners_in_period < max_miners_in_period, "too many miners, throttled.");
         require(now > start_timestamp, "mining not open yet.");
         require(msg.value >= 1 ether, "minimum 1 TLOS.");
         require(msg.value <= 2 ether, "maximum 2 TLOS.");
@@ -71,7 +71,6 @@ contract ChinaCoinMiningSystem
             total_miners_in_period = 0; }
 
         total_miners_in_period++;
-        require(total_miners_in_period <= max_miners_in_period, "too many miners, throttled.");
 
         uint256 reward = 300000000000000000000000; /* level 0 reward */
         /* Determine mining level */
