@@ -2,10 +2,7 @@ pragma solidity ^0.6.2;
 /* SPDX-License-Identifier: UNLICENSED */
 
 interface IERC20
-{
-    function transfer(address _to, uint _value) external returns (bool success);
-    function balanceOf(address _owner) external returns (uint256 balance);
-}
+{   function transfer(address _to, uint _value) external returns (bool success); function balanceOf(address _owner) external returns (uint256 balance);   }
 
 contract ChinaCoinMiningSystem
 {
@@ -40,7 +37,7 @@ contract ChinaCoinMiningSystem
     constructor() public 
     {
         owner_address = msg.sender;
-        start_timestamp = now; /* Wednesday, 2 March 2022 20:00:00 */
+        start_timestamp = 1646251200; /* Wednesday, 2 March 2022 20:00:00 */
         TCCI = IERC20(tcc_contract);
     }
 
